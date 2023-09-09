@@ -1,0 +1,73 @@
+body {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.h1Title {
+  color: white;
+  text-align: center;
+}
+
+
+img {
+  width: 100px;
+  float: left;
+  padding-right: 5px;
+  border-radius: 10px;
+}
+
+.Movie {
+  width: 600px;
+  height: 150px;
+  float: left;
+  margin: 5px;
+  color: white;
+}
+
+.MovieTitle {
+  font-weight: bold;
+}
+
+.MovieText {
+  font-size: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+
+.GenresText, .VideosText {
+  font-size: 70%;
+}
+
+.VideoText {
+  color:#00BFFF;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  cursor: pointer;
+  border: none;
+  background-color: black;
+  color: white;
+  font-size: large;
+}
