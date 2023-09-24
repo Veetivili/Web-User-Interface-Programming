@@ -1,8 +1,8 @@
 ## Exercise showcase:
 
-### E02 - Todo App
+### E08 - React Router
 
-<img src='../images/E1.gif' height="600" />
+<img src='../images/E8.gif' height="600" />
 
 [View code here](./src/App.js)
 
