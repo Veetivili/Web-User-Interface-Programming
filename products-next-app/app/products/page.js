@@ -6,24 +6,21 @@ export default async function Products({  }) {
   const products = await res.json();
 
   return (
-    <div>
-      <h1>Products</h1>
-      <ul>
+    <div className='page-container'>
+      <h1 className='page-title'>Products</h1>
+      <ul className='product-list-items'>
         {products.map(product => (
-          <li key={product.id}>
+          <li 
+          key={product.id}
+          className='product-list-item'>
             <Link href={`/products/${product.id}`}>
-                <img src={product.image} alt={product.title} width={100} />
-                <h2>{product.title}</h2>
-                <p>Price: ${product.price}</p>
+                <img className='product-image' src={product.image} alt={product.title} width={100} />
+                <h2 className='product-title'>{product.title}</h2>
+                <p className='product-price'>Price: ${product.price}</p>
             </Link>
           </li>
         ))}
       </ul>
-      <nav>
-        <Link href="/">Home</Link>
-        <Link href="/about">About</Link>
-        <Link href="/products">Products</Link>
-      </nav>
     </div>
   );
 }

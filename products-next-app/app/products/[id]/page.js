@@ -20,16 +20,13 @@ export default function ProductDetail() {
   if (!product) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h1>{product.title}</h1>
-      <img src={product.image} alt={product.title} width={200} />
-      <p>Price: ${product.price}</p>
-      <p>{product.description}</p>
-      <nav>
-        <Link href="/">Home</Link>
-        <Link href="/about">About</Link>
-        <Link href="/products">Products</Link>
-      </nav>
+    <div className='page-container-view'>
+      
+      <h1 className='product-view-title'>{product.title}</h1>
+      <img className='product-view-image' src={product.image} alt={product.title} width={200} />
+      <p className='product-view-price'>Price: ${product.price}</p>
+      <p className='product-view-description'>{product.description}</p>
+      
     </div>
   );
 }
