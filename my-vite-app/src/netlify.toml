@@ -1,0 +1,8 @@
+[dev]
+targetPort = 5173
+functions = './netlify/functions'
+
+[build]
+command = 'npm run build'
+functions = 'functions'
+publish = 'build'
