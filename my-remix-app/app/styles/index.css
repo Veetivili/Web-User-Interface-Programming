@@ -1,11 +1,13 @@
-/*
- * when the user visits this page, this style will apply, when they leave, it
- * will get unloaded, so don't worry so much about conflicting styles between
- * pages!
- */
-
- body {
+:root {
+  --color-background: hsl(210, 60%, 95%);
+  --color-text: hsl(220, 15%, 20%);
+  --color-accent: hsl(48, 100%, 60%);
+}
+  
+  body {
     background-image: var(--gradient-background);
+    color: var(--color-accent);
+
   }
   
   .container {
@@ -73,4 +75,9 @@
       font-size: 8rem;
     }
   }
+
+  
+
+
+
   
