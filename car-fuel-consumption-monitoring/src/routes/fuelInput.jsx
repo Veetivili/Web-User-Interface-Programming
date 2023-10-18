@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addRefuelEvent } from '../reducers/fuelSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addRefuelEvent, setPreviousKilometers } from '../reducers/fuelSlice';
 
 function FuelInput() {
     const dispatch = useDispatch();
@@ -9,14 +9,14 @@ function FuelInput() {
     const [refueledLiters, setRefueledLiters] = useState('');
     const [pricePerLiter, setPricePerLiter] = useState('');
 
-    // Store previous kilometer reading
-    const [previousKilometers, setPreviousKilometers] = useState(null);
+    // Retrieve previous kilometer reading from Redux store
+    const previousKilometers = useSelector(state => state.fuel.previousKilometers);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         // Calculate kmFromPreviousRefuel
-        const kmFromPreviousRefuel = previousKilometers !== null ? kilometers - previousKilometers : 0;
+        const kmFromPreviousRefuel = previousKilometers !== null ? parseFloat(kilometers) - parseFloat(previousKilometers) : 0;
 
 
         dispatch(addRefuelEvent({
@@ -30,7 +30,7 @@ function FuelInput() {
         }));
 
         // Store current kilometer reading
-        setPreviousKilometers(kilometers);
+        dispatch(setPreviousKilometers(parseFloat(kilometers)));
 
         setDate('');
         setKilometers('');

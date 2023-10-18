@@ -1,8 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFuelEvent } from '../reducers/fuelSlice';
+import  '../app.css';
 
 function FuelHistory() {
-    const fuelHistory = useSelector(state => state.fuel);
+    //const { refuelEvents: fuelHistory } = useSelector(state => state.fuel);
+    const fuelHistory = useSelector(state => state.fuel?.refuelEvents) || [];
+    //const fuelHistory = useSelector(state => state.fuel);
     const dispatch = useDispatch();
 
     // Calculate totals and averages
@@ -29,7 +32,7 @@ function FuelHistory() {
                         <th>Refueled Liters</th>
                         <th>Price per Liter</th>
                         <th>Cost</th>
-                        <th></th> {/* Remove button column */}
+                        <th></th> 
                     </tr>
                 </thead>
                 <tbody>
