@@ -6,7 +6,6 @@ function FuelInput() {
     const dispatch = useDispatch();
     const [date, setDate]  = useState('');
     const [kilometers, setKilometers] = useState('');
-    //const [kmFromPreviousRefuel, setKmFromPreviousRefuel] = useState('');
     const [refueledLiters, setRefueledLiters] = useState('');
     const [pricePerLiter, setPricePerLiter] = useState('');
 
@@ -44,7 +43,6 @@ function FuelInput() {
         <form className='input-form' onSubmit={handleSubmit}>
           <input type='date' placeholder='Date' value={date} onChange={(e) => setDate(e.target.value)} />
           <input type='number' placeholder='Car total kilometers' value={kilometers} onChange={(e) => setKilometers(e.target.value)} />
-          {/* <input type='number' placeholder='Kilometers driven since previous refuel' value={kmFromPreviousRefuel} onChange={(e) => setKmFromPreviousRefuel(e.target.value)} /> */}
           <input type='number' placeholder='Refueled Liters' value={refueledLiters} onChange={(e) => setRefueledLiters(e.target.value)} />
           <input type='number' placeholder='Price Per Liter (€)' value={pricePerLiter} onChange={(e) => setPricePerLiter(e.target.value)} />
           <button type='submit'>Submit</button>
