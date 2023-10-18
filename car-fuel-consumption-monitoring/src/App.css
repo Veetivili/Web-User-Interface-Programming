@@ -1,0 +1,82 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  margin-left: 2rem;
+  color: rgb(139, 131, 131);
+}
+
+.container {
+  max-width: 100%;
+  margin: 0rem auto;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
+.input-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+input[type="date"], 
+input[type="number"], 
+button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input[type="date"]:focus, 
+input[type="number"]:focus {
+  border-color: #007bff;
+}
+
+button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Fuel history table */
+
+.fuel-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+.fuel-table, .fuel-table th, .fuel-table td {
+  border: 1px solid #ccc;
+}
+
+.fuel-table th, .fuel-table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+.fuel-table thead {
+  background-color: #f5f5f5;
+}
