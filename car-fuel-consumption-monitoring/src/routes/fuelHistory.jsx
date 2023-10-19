@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeFuelEvent, setFuelHistory } from '../reducers/fuelSlice';
 import { db } from '../firebase';
 import  '../app.css';
+//import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';  
+
 
 function FuelHistory() {
     //const { refuelEvents: fuelHistory } = useSelector(state => state.fuel);
@@ -14,12 +18,17 @@ function FuelHistory() {
         const fetchFuelEvents = async () => {
           const snapshot = await db.collection('refuelEvents').get();
           const allFuelEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          snapshot.forEach(doc => allFuelEvents.push(doc.data()));
           dispatch(setFuelHistory(allFuelEvents));
         };
     
         fetchFuelEvents();
       }, [dispatch]);
+
+      /* useEffect(() => {
+        return () => {
+          Chart.instances.forEach((chart) => chart.destroy());
+        };
+      }, []); */
 
     // Calculate totals and averages
     const totalRefueledLiters = fuelHistory.reduce((acc, entry) => acc + parseFloat(entry.refueledLiters), 0);
@@ -43,6 +52,39 @@ function FuelHistory() {
 
      // Remove from Redux state
     dispatch(removeFuelEvent(index));
+    };
+
+    const consumptionData = {
+        labels: ['Average Consumption', 'Average Price'],
+        datasets: [
+          {
+            data: [averageConsumption],
+            backgroundColor: [
+              '#F232SB',
+              '#36A2EB'
+            ],
+            hoverBackgroundColor: [
+              '#FF6384',
+              '#36A2EB'
+            ]
+          }
+        ]
+      };
+    const costData = {
+        labels: ['Average Price per liter'],
+        datasets: [
+          {
+            data: [averagePricePerLiter],
+            backgroundColor: [
+              '#FF4210',
+              '#36A2EB'
+            ],
+            hoverBackgroundColor: [
+              '#FF6384',
+              '#36A2EB'
+            ]
+          }
+        ]
     };
 
     return(
@@ -98,6 +140,10 @@ function FuelHistory() {
                     </tr>
                 </tbody>
             </table>
+            <div className='chart-container'>
+            <Pie className='pie' data={consumptionData} />
+            <Pie className='pie' data={costData} />
+            </div>
         </div>
     );
 }

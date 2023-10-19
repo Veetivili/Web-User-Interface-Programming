@@ -10,6 +10,12 @@ import Nav from './routes/nav.jsx'
 import FuelInput from './routes/fuelInput.jsx'
 import FuelHistory from './routes/fuelHistory.jsx'
 
+import Chart from 'chart.js/auto';
+import { ArcElement } from 'chart.js';
+
+
+Chart.register(ArcElement);
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
