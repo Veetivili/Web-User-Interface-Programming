@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFuelEvent } from '../reducers/fuelSlice';
+import { removeFuelEvent, setFuelHistory } from '../reducers/fuelSlice';
+import { db } from '../firebase';
 import  '../app.css';
 
 function FuelHistory() {
@@ -7,6 +9,17 @@ function FuelHistory() {
     const fuelHistory = useSelector(state => state.fuel?.refuelEvents) || [];
     //const fuelHistory = useSelector(state => state.fuel);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchFuelEvents = async () => {
+          const snapshot = await db.collection('refuelEvents').get();
+          const allFuelEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          snapshot.forEach(doc => allFuelEvents.push(doc.data()));
+          dispatch(setFuelHistory(allFuelEvents));
+        };
+    
+        fetchFuelEvents();
+      }, [dispatch]);
 
     // Calculate totals and averages
     const totalRefueledLiters = fuelHistory.reduce((acc, entry) => acc + parseFloat(entry.refueledLiters), 0);
@@ -17,7 +30,19 @@ function FuelHistory() {
     const averageCost = (Math.round((totalCost / fuelHistory.length)).toFixed(2));
 
     const handleRemoveEntry = (index) => {
-        dispatch(removeFuelEvent(index));
+        const eventToRemove = fuelHistory[index];
+
+    // Remove from Firebase
+    db.collection('refuelEvents').doc(eventToRemove.id).delete()
+    .then(() => {
+        console.log('Refuel event removed from firebase');
+    })
+    .catch((error) => {
+        console.log('Error removing refuel event from firebase: ', error);
+    });
+
+     // Remove from Redux state
+    dispatch(removeFuelEvent(index));
     };
 
     return(

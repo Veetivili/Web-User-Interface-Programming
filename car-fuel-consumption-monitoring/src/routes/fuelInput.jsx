@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addRefuelEvent, setPreviousKilometers } from '../reducers/fuelSlice';
+import { db } from '../firebase';
 
 function FuelInput() {
     const dispatch = useDispatch();
@@ -18,19 +19,30 @@ function FuelInput() {
         // Calculate kmFromPreviousRefuel
         const kmFromPreviousRefuel = previousKilometers !== null ? parseFloat(kilometers) - parseFloat(previousKilometers) : 0;
 
+        const refuelEvent = {
+          date,
+          carKilometers: parseFloat(kilometers),
+          kmFromPreviousRefuel,
+          refueledLiters: parseFloat(refueledLiters),
+          pricePerLiter: parseFloat(pricePerLiter),
+          cost: (Math.round(parseFloat(refueledLiters) * parseFloat(pricePerLiter)).toFixed(2)),
+          consumption: (Math.round((parseFloat(refueledLiters) / kmFromPreviousRefuel) * 100).toFixed(2))
+      };
 
-        dispatch(addRefuelEvent({
-            date,
-            carKilometers: parseFloat(kilometers),
-            kmFromPreviousRefuel,
-            refueledLiters: parseFloat(refueledLiters),
-            pricePerLiter: parseFloat(pricePerLiter),
-            cost: (Math.round(parseFloat(refueledLiters) * parseFloat(pricePerLiter)).toFixed(2)),
-            consumption: (Math.round((parseFloat(refueledLiters) / kmFromPreviousRefuel) * 100).toFixed(2))
-        }));
+
+        dispatch(addRefuelEvent(refuelEvent));
 
         // Store current kilometer reading
         dispatch(setPreviousKilometers(parseFloat(kilometers)));
+
+        // save to firebase
+
+        db.collection('refuelEvents').add(refuelEvent).then(() => {
+          console.log('Refuel event added to firebase');
+        }
+        ).catch((error) => {
+          console.log('Error adding refuel event to firebase: ', error);
+        });
 
         setDate('');
         setKilometers('');
