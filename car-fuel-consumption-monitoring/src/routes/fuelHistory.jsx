@@ -3,20 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeFuelEvent, setFuelHistory } from '../reducers/fuelSlice';
 import { db } from '../firebase';
 import  '../app.css';
-//import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';  
+
 
 
 function FuelHistory() {
-    //const { refuelEvents: fuelHistory } = useSelector(state => state.fuel);
+    
     const fuelHistory = useSelector(state => state.fuel?.refuelEvents) || [];
-    //const fuelHistory = useSelector(state => state.fuel);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchFuelEvents = async () => {
-          const snapshot = await db.collection('refuelEvents').get();
+          const snapshot = await db.collection('refuelEvents').orderBy('date').get();
           const allFuelEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           dispatch(setFuelHistory(allFuelEvents));
         };
@@ -24,14 +22,9 @@ function FuelHistory() {
         fetchFuelEvents();
       }, [dispatch]);
 
-      /* useEffect(() => {
-        return () => {
-          Chart.instances.forEach((chart) => chart.destroy());
-        };
-      }, []); */
 
     // Calculate totals and averages
-    const totalRefueledLiters = fuelHistory.reduce((acc, entry) => acc + parseFloat(entry.refueledLiters), 0);
+    const totalRefueledLiters = fuelHistory.reduce((acc, entry) => acc + parseFloat(entry.refueledLiters), 0).toFixed(2);
     const totalCost = fuelHistory.reduce((acc, entry) => acc + parseFloat(entry.cost), 0);
     const totalKilometers = fuelHistory.length > 0 ? parseFloat(fuelHistory[fuelHistory.length - 1].carKilometers) - parseFloat(fuelHistory[0].carKilometers) : 0;
     const averagePricePerLiter = ((fuelHistory.reduce((acc, entry) => acc + parseFloat(entry.pricePerLiter), 0) / fuelHistory.length) || 0).toFixed(2);
