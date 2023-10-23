@@ -1,6 +1,4 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
-
-//export const setFuelHistory = createAction('fuel/setFuelHistory');
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     refuelEvents: [],
@@ -12,10 +10,10 @@ const fuelSlice = createSlice({
     initialState,
     reducers: {
         addRefuelEvent: (state, action) => {
-            state.refuelEvents.push(action.payload);  // Updated line
+            state.refuelEvents.push(action.payload);  
         },
         removeFuelEvent: (state, action) => {
-            state.refuelEvents.splice(action.payload, 1);  // Updated line
+            state.refuelEvents.splice(action.payload, 1);  
         },
         setPreviousKilometers: (state, action) => {
             state.previousKilometers = action.payload;
