@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { addRefuelEvent, setPreviousKilometers } from '../reducers/fuelSlice';
 import { db } from '../firebase';
 
@@ -9,15 +9,25 @@ function FuelInput() {
     const [kilometers, setKilometers] = useState('');
     const [refueledLiters, setRefueledLiters] = useState('');
     const [pricePerLiter, setPricePerLiter] = useState('');
+    const [lastKilometers, setLastKilometers] = useState(null);
 
-    // Retrieve previous kilometer reading from Redux store
-    const previousKilometers = useSelector(state => state.fuel.previousKilometers);
+    // Fetch the last carKilometers value from Firebase when component mounts
+    useEffect(() => {
+      const fetchLastKilometers = async () => {
+          const lastDocSnapshot = await db.collection('refuelEvents').orderBy('date', 'desc').limit(1).get();
+          if (!lastDocSnapshot.empty) {
+              const lastDoc = lastDocSnapshot.docs[0];
+              setLastKilometers(lastDoc.data().carKilometers);
+          }
+      };
+      fetchLastKilometers();
+  }, []);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Calculate kmFromPreviousRefuel
-        const kmFromPreviousRefuel = previousKilometers !== null ? parseFloat(kilometers) - parseFloat(previousKilometers) : 0;
+        const kmFromPreviousRefuel = lastKilometers !== null ? parseFloat(kilometers) - lastKilometers : 0;
 
         const refuelEvent = {
           date,
